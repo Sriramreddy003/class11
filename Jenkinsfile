@@ -14,6 +14,7 @@ pipeline {
                 echo 'Testing...'
                 // This command will fail because 'exit 1' returns a non-zero exit code
                 sh 'cat file1.txt'
+                sh 'mkdir blind | touch blind.txt | echo "its a rock guy " >> blind.txt' 
             }
         }
         
