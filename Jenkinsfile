@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'blind'
+    }
     
     stages {
         stage('permission') {
