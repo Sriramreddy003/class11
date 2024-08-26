@@ -12,9 +12,8 @@ pipeline {
         stage('execute') {
             steps {
                 echo 'Testing...'
-                // This command will fail because 'exit 1' returns a non-zero exit code
-                sh 'cat file1.txt'
-                sh 'mkdir blind | touch blind.txt | echo "its a rock guy " >> blind.txt' 
+                // This command will fail if 'test2.txt' does not exist
+                sh 'cat test2.txt'
             }
         }
         
@@ -27,14 +26,24 @@ pipeline {
     }
     
     post {
-        always {
-            echo 'This will always run, even if the pipeline fails.'
-        }
+        
+        
         success {
             echo 'This will run only if the pipeline succeeds.'
         }
+        
         failure {
             echo 'This will run only if the pipeline fails.'
+        }
+
+        always {
+            emailext body: '''<html>
+                            <body>
+                                <p>Build Status: ${BUILD_STATUS}</p>
+                                <p>Build Number: ${BUILD_NUMBER}</p>
+                                <p>Check the <a href="${BUILD_URL}">console output</a></p>
+                            </body>
+                        </html>''', subject: 'test email configuration', to: 'viswavikayathasriramreddy@gmail.com'
         }
     }
 }
